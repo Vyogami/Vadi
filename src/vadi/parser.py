@@ -8,7 +8,6 @@ class Parser:
         self.tokens: List[Token] = tokens  # type: ignore  # noqa: PGH003 # To disable pylint and ruff warnings
         self.idx: int = 0
 
-        # if tokens is not None:
         self.token: Token = self.tokens[self.idx]
 
     def factor(self) -> Token:
@@ -17,6 +16,16 @@ class Parser:
             self.move_ahead()
 
             return factor_token
+
+        elif self.token.value == "(":
+            # To skip '('
+            self.move_ahead()
+            # To evaluate the expression in between parenthesis '(<expr>)'
+            expression: List[Token] = self.expression()
+            # To skip ')'
+            self.move_ahead()
+
+            return expression
 
     def term(self) -> List[Token]:
         left_node: Token | List[Token] = self.factor()

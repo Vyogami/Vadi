@@ -6,7 +6,7 @@ from utils.console import console
 
 class Lexer:
     digits: str = "0123456789"
-    operations: str = "+-*/"
+    operations: str = "+-*/()"
     stopwords = [" "]
 
     def __init__(self, text: str) -> None:
