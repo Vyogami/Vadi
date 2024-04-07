@@ -12,6 +12,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
+rich = "^13.7.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
@@ -81,6 +82,8 @@ ignore = [
     "E501",
     # DoNotAssignLambda
     "E731",
+    # MutableClassDefault
+    "RUF012"
 ]
 
 [tool.ruff.format]
