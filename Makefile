@@ -5,6 +5,10 @@ install: ## Install the poetry environment and install the pre-commit hooks
 	@ poetry run pre-commit install
 	@poetry shell
 
+.PHONY: repl
+repl: ## Starts the RRPL of Vadi language
+	@poetry run python3 src/vadi/repl.py
+
 .PHONY: check
 check: ## Run code quality tools.
 	@echo "🚀 Checking Poetry lock file consistency with 'pyproject.toml': Running poetry lock --check"
