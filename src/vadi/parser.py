@@ -13,17 +13,17 @@ class Parser:
     def factor(self) -> Token:
         if self.token.token_type in ("INT", "FLT"):
             factor_token: Token = self.token
-            self.move_ahead()
+            self.look_ahead()
 
             return factor_token
 
         elif self.token.value == "(":
             # To skip '('
-            self.move_ahead()
+            self.look_ahead()
             # To evaluate the expression in between parenthesis '(<expr>)'
             expression: List[Token] = self.expression()
             # To skip ')'
-            self.move_ahead()
+            self.look_ahead()
 
             return expression
 
@@ -32,7 +32,7 @@ class Parser:
 
         while self.token.value in ("*", "/"):
             operator: Token = self.token
-            self.move_ahead()
+            self.look_ahead()
 
             right_node: Token = self.factor()
             left_node = [left_node, operator, right_node]
@@ -44,7 +44,7 @@ class Parser:
 
         while self.token.value in ("+", "-"):
             operator: Token = self.token
-            self.move_ahead()
+            self.look_ahead()
 
             right_node: Token = self.term()
             left_node = [left_node, operator, right_node]
@@ -54,7 +54,7 @@ class Parser:
     def parse(self) -> Token | List[Token]:
         return self.expression()
 
-    def move_ahead(self) -> None:
+    def look_ahead(self) -> None:
         self.idx += 1
 
         if self.idx < len(self.tokens):

@@ -17,6 +17,6 @@ class Float(Token):
         super().__init__("FLT", value)
 
 
-class Operation(Token):
+class Operator(Token):
     def __init__(self, value: str) -> None:
         super().__init__("OP", value)

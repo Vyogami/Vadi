@@ -1,12 +1,12 @@
 from typing import List
 
-from tokens import Float, Integer, Operation, Token
+from tokens import Float, Integer, Operator, Token
 from utils.console import console
 
 
 class Lexer:
     digits: str = "0123456789"
-    operations: str = "+-*/()"
+    operators: str = "+-*/()"
     stopwords = [" "]
 
     def __init__(self, text: str) -> None:
@@ -28,12 +28,12 @@ class Lexer:
             if self.char in Lexer.digits:
                 self.token = self.extract_number()
 
-            elif self.char in Lexer.operations:
-                self.token = Operation(self.char)
-                self.move_ahead()
+            elif self.char in Lexer.operators:
+                self.token = Operator(self.char)
+                self.look_ahead()
 
             elif self.char in Lexer.stopwords:
-                self.move_ahead()
+                self.look_ahead()
                 continue
             else:
                 console.print(f"[b][ERROR] [/b]Syntax error: [u grey66]{self.char}[/u grey66]", style="error")
@@ -53,14 +53,14 @@ class Lexer:
                 isFloat = True
 
             numbers += self.char
-            self.move_ahead()
+            self.look_ahead()
 
         if isFloat:
             return Float(numbers)
         else:
             return Integer(numbers)
 
-    def move_ahead(self) -> None:
+    def look_ahead(self) -> None:
         self.idx += 1
 
         if self.idx < len(self.text):
