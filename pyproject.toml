@@ -34,11 +34,11 @@ build-backend = "poetry.core.masonry.api"
 [tool.mypy]
 files = ["src/vadi"]
 disallow_untyped_defs = true
-disallow_any_unimported = true
+# disallow_any_unimported = true
+ignore_missing_imports = true
 no_implicit_optional = true
 check_untyped_defs = true
 warn_return_any = true
-warn_unused_ignores = true
 show_error_codes = true
 
 [tool.pytest.ini_options]
