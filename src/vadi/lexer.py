@@ -1,13 +1,10 @@
 from typing import List
 
 from tokens import Float, Integer, Operator, Token
+from utils import constants
 
 
 class Lexer:
-    digits: str = "0123456789"
-    operators: str = "+-*/()"
-    stopwords = [" "]
-
     def __init__(self, text: str) -> None:
         self.text: str = text
         self.idx: int = 0
@@ -17,14 +14,14 @@ class Lexer:
 
     def tokenize(self) -> List[Token]:
         while self.idx < len(self.text):
-            if self.char in Lexer.digits:
+            if self.char in constants.DIGITS:
                 self.token = self.extract_number()
 
-            elif self.char in Lexer.operators:
+            elif self.char in constants.OPERATORS:
                 self.token = Operator(self.char)
                 self.look_ahead()
 
-            elif self.char in Lexer.stopwords:
+            elif self.char in constants.STOPWORDS:
                 self.look_ahead()
                 continue
 
@@ -36,7 +33,7 @@ class Lexer:
         numbers: str = ""
         isFloat = False
 
-        while (self.char in Lexer.digits or self.char == ".") and (self.idx < len(self.text)):
+        while (self.char in constants.DIGITS or self.char == ".") and (self.idx < len(self.text)):
             # Check if the number is floating point by checking if it contains decimal point(.)
             if self.char == ".":
                 isFloat = True
