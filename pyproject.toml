@@ -89,6 +89,10 @@ ignore = [
   "E731",
   # MutableClassDefault
   "RUF012",
+  # builtinArgumentShadowing
+  "A002",
+  # blanketTypeIgnore
+  "PGH003"
 ]
 
 [tool.ruff.format]
