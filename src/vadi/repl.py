@@ -13,6 +13,10 @@ while True:
     console.print("[REPL] Vadi: ", style="info", end="")
     text = input()
 
+    # if the incoming sting text is empyt then skip the iteration, empty string means <enter> | ""
+    if text == "":
+        continue
+
     tokenizer: Lexer = Lexer(text)
     tokens: List[Token] = tokenizer.tokenize()
 

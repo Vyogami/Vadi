@@ -1,7 +1,6 @@
 from typing import List
 
 from tokens import Float, Integer, Operator, Token
-from utils.console import console
 
 
 class Lexer:
@@ -14,16 +13,9 @@ class Lexer:
         self.idx: int = 0
         self.tokens: List[Token] = []
         self.token: Token | None = None
+        self.char: str = self.text[self.idx]
 
-        # Sets current character value to text[0] only if the incoming text string is not empty
-        if text != "":
-            self.char: str = self.text[self.idx]
-
-    def tokenize(self) -> List[Token] | None:
-        # Checks if the incoming text string is empty
-        if self.text == "":
-            return None
-
+    def tokenize(self) -> List[Token]:
         while self.idx < len(self.text):
             if self.char in Lexer.digits:
                 self.token = self.extract_number()
@@ -35,9 +27,6 @@ class Lexer:
             elif self.char in Lexer.stopwords:
                 self.look_ahead()
                 continue
-            else:
-                console.print(f"[b][ERROR] [/b]Syntax error: [u grey66]{self.char}[/u grey66]", style="error")
-                return None
 
             self.tokens.append(self.token)
 
