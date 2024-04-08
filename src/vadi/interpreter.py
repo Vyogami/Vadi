@@ -29,6 +29,17 @@ class Interpreter:
 
         return getattr(self, f"{variable_type}")(variable.value)
 
+    def compute_unary(self, operator: Token, operand: Token) -> Token:
+        operand_type: str = "VAR" if operand.type.startswith("VAR") else operand.type
+
+        operand = getattr(self, f"{operand_type}")(operand.value)
+
+        match operator.value:
+            case "+":
+                return +operand
+            case "-":
+                return -operand
+
     def compute_binary(self, left_operand: Token, operator: Token, right_operand: Token) -> Integer | Float:
         left_type: str = "VAR" if left_operand.type.startswith("VAR") else left_operand.type
         right_type: str = "VAR" if left_operand.type.startswith("VAR") else right_operand.type
@@ -64,14 +75,25 @@ class Interpreter:
         if tree is None:
             tree = self.tree
 
-        left_operand: List[Token] | Token = tree[0]
-        if isinstance(left_operand, list):
-            left_operand = self.interpret(left_operand)
+        # Arithmetic literal
+        if not isinstance(tree, list):
+            return tree
 
-        right_operand: List[Token] | Token = tree[2]
-        if isinstance(right_operand, list):
-            right_operand = self.interpret(right_operand)
+        # Unary opeartion
+        elif isinstance(tree, list) and len(tree) == 2:
+            # compute_unary(operator, operand)
+            return self.compute_unary(tree[0], tree[1])
 
-        operator: Token = tree[1]
+        # Binary operations
+        else:
+            left_operand: List[Token] | Token = tree[0]
+            if isinstance(left_operand, list):
+                left_operand = self.interpret(left_operand)
 
-        return self.compute_binary(left_operand, operator, right_operand)
+            right_operand: List[Token] | Token = tree[2]
+            if isinstance(right_operand, list):
+                right_operand = self.interpret(right_operand)
+
+            operator: Token = tree[1]
+
+            return self.compute_binary(left_operand, operator, right_operand)

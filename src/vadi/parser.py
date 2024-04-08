@@ -49,6 +49,13 @@ class Parser:
         elif self.token.type.startswith("VAR"):
             return self.token
 
+        elif self.token.value in ("+", "-"):
+            operator: Token = self.token
+            self.look_ahead()
+            operand: Token = self.factor()
+
+            return [operator, operand]
+
         return None
 
     def term(self) -> List[Token]:
