@@ -1,11 +1,19 @@
 from typing import List
 
+from memory import Memory
 from tokens import Float, Integer, Token
+from utils.console import console
 
 
 class Interpreter:
-    def __init__(self, tree: List[Token] | Token) -> None:
+    def __init__(self, tree: List[Token] | Token | None, memory: Memory) -> None:
+        if tree is None:
+            self.syntax_error = True
+        else:
+            self.syntax_error = False
+
         self.tree: List[Token] | Token = tree
+        self.memory: Memory = memory
 
     @staticmethod
     def INT(value: str) -> int:
@@ -15,12 +23,23 @@ class Interpreter:
     def FLT(value: str) -> float:
         return float(value)
 
-    def compute_binary(self, left_operand: Token, operator: Token, right_operand: Token) -> Integer | Float:
-        left_type: str = left_operand.token_type
-        right_type: str = right_operand.token_type
+    def VAR(self, id: str) -> Token:
+        variable: Token = self.memory.read(id)
+        variable_type: str = variable.type
 
-        left_operand = getattr(Interpreter, f"{left_type}")(left_operand.value)
-        right_operand = getattr(Interpreter, f"{right_type}")(right_operand.value)
+        return getattr(self, f"{variable_type}")(variable.value)
+
+    def compute_binary(self, left_operand: Token, operator: Token, right_operand: Token) -> Integer | Float:
+        left_type: str = "VAR" if left_operand.type.startswith("VAR") else left_operand.type
+        right_type: str = "VAR" if left_operand.type.startswith("VAR") else right_operand.type
+
+        if operator.value == "=":
+            left_operand.type = f"VAR{right_type}"
+            self.memory.write(left_operand, right_operand)
+            return right_operand.value
+
+        left_operand = getattr(self, f"{left_type}")(left_operand.value)
+        right_operand = getattr(self, f"{right_type}")(right_operand.value)
 
         match operator.value:
             case "+":
@@ -37,15 +56,19 @@ class Interpreter:
         else:
             return Integer(result)
 
-    def interpret(self, tree: List[Token] | Token | None = None) -> Token:
+    def interpret(self, tree: List[Token] | Token | None = None) -> Token | None:
+        if self.syntax_error:
+            console.print("[b][ERROR]:[/b] Syntax error", style="error")
+            return None
+
         if tree is None:
             tree = self.tree
 
-        left_operand: str | List[Token] = tree[0]
+        left_operand: List[Token] | Token = tree[0]
         if isinstance(left_operand, list):
             left_operand = self.interpret(left_operand)
 
-        right_operand: str | List[Token] = tree[2]
+        right_operand: List[Token] | Token = tree[2]
         if isinstance(right_operand, list):
             right_operand = self.interpret(right_operand)
 

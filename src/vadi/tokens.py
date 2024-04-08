@@ -1,6 +1,6 @@
 class Token:
     def __init__(self, token_type: str, value: str) -> None:
-        self.token_type: str = token_type
+        self.type: str = token_type
         self.value: str = value
 
     def __repr__(self) -> str:
@@ -20,3 +20,13 @@ class Float(Token):
 class Operator(Token):
     def __init__(self, value: str) -> None:
         super().__init__("OP", value)
+
+
+class Declaration(Token):
+    def __init__(self, value: str) -> None:
+        super().__init__("DECL", value)
+
+
+class Variable(Token):
+    def __init__(self, value: str) -> None:
+        super().__init__("VAR(?)", value)

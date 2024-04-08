@@ -5,30 +5,55 @@ from tokens import Token
 
 class Parser:
     def __init__(self, tokens: List[Token]) -> None:
-        self.tokens: List[Token] = tokens  # type: ignore  # noqa: PGH003 # To disable pylint and ruff warnings
+        # type: ignore # To disable pylance warnings
+        self.tokens: List[Token] = tokens
         self.idx: int = 0
 
         self.token: Token = self.tokens[self.idx]
 
-    def factor(self) -> Token:
-        if self.token.token_type in ("INT", "FLT"):
-            factor_token: Token = self.token
-            self.look_ahead()
+    def look_ahead(self) -> None:
+        self.idx += 1
+        if self.idx < len(self.tokens):
+            self.token = self.tokens[self.idx]
 
-            return factor_token
+    def variable(self) -> Token:
+        if self.token.type.startswith("VAR"):
+            temp: Token = self.token
+            self.look_ahead()
+            return temp
+
+        if self.idx < len(self.tokens):
+            self.token = self.tokens[self.idx]
+
+    def factor(self) -> Token | List[Token] | None:
+        """A factor can be an int, float, expression inside parenthesis or a variable.
+
+        Grammar:
+            <factor> = INT | FLT | (<expr>) | VAR
+
+        Returns:
+            Token | List[Token]
+        """
+
+        if self.token.type in ("INT", "FLT"):
+            return self.token
 
         elif self.token.value == "(":
             # To skip '('
             self.look_ahead()
             # To evaluate the expression in between parenthesis '(<expr>)'
             expression: List[Token] = self.expression()
-            # To skip ')'
-            self.look_ahead()
 
             return expression
 
+        elif self.token.type.startswith("VAR"):
+            return self.token
+
+        return None
+
     def term(self) -> List[Token]:
         left_node: Token | List[Token] = self.factor()
+        self.look_ahead()
 
         while self.token.value in ("*", "/"):
             operator: Token = self.token
@@ -51,11 +76,23 @@ class Parser:
 
         return left_node
 
+    def statement(self) -> List[Token] | None:
+        # Variable assignment
+        if self.token.type == "DECL":
+            self.look_ahead()
+            left_node: Token = self.variable()
+            if self.token.value == "=":
+                operator: Token = self.token
+                self.look_ahead()
+                right_node: Token = self.expression()
+
+                return [left_node, operator, right_node]
+
+        # Arithmetic expression
+        elif self.token.type in ("INT", "FLT", "OP"):
+            return self.expression()
+
+        return None
+
     def parse(self) -> Token | List[Token]:
-        return self.expression()
-
-    def look_ahead(self) -> None:
-        self.idx += 1
-
-        if self.idx < len(self.tokens):
-            self.token = self.tokens[self.idx]
+        return self.statement()

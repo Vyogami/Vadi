@@ -1,6 +1,6 @@
 from typing import List
 
-from tokens import Float, Integer, Operator, Token
+from tokens import Declaration, Float, Integer, Operator, Token, Variable
 from utils import constants
 
 
@@ -12,22 +12,11 @@ class Lexer:
         self.token: Token | None = None
         self.char: str = self.text[self.idx]
 
-    def tokenize(self) -> List[Token]:
-        while self.idx < len(self.text):
-            if self.char in constants.DIGITS:
-                self.token = self.extract_number()
+    def look_ahead(self) -> None:
+        self.idx += 1
 
-            elif self.char in constants.OPERATORS:
-                self.token = Operator(self.char)
-                self.look_ahead()
-
-            elif self.char in constants.STOPWORDS:
-                self.look_ahead()
-                continue
-
-            self.tokens.append(self.token)
-
-        return self.tokens
+        if self.idx < len(self.text):
+            self.char = self.text[self.idx]
 
     def extract_number(self) -> Integer | Float:
         numbers: str = ""
@@ -46,8 +35,35 @@ class Lexer:
         else:
             return Integer(numbers)
 
-    def look_ahead(self) -> None:
-        self.idx += 1
+    def extract_word(self) -> str:
+        word: str = ""
+        while self.char.lower() in constants.ALPHABETS and self.idx < len(self.text):
+            word += self.char
+            self.look_ahead()
 
-        if self.idx < len(self.text):
-            self.char = self.text[self.idx]
+        return word
+
+    def tokenize(self) -> List[Token]:
+        while self.idx < len(self.text):
+            if self.char in constants.DIGITS:
+                self.token = self.extract_number()
+
+            elif self.char in constants.OPERATORS:
+                self.token = Operator(self.char)
+                self.look_ahead()
+
+            elif self.char.lower() in constants.ALPHABETS:
+                word: str = self.extract_word()
+
+                if word in constants.DECLARATIONS:
+                    self.token = Declaration(word)
+                else:
+                    self.token = Variable(word)
+
+            elif self.char in constants.STOPWORDS:
+                self.look_ahead()
+                continue
+
+            self.tokens.append(self.token)
+
+        return self.tokens
