@@ -7,7 +7,7 @@ install: ## Install the poetry environment and install the pre-commit hooks
 
 .PHONY: repl
 repl: ## Starts the RRPL of Vadi language
-	@poetry run python3 src/vadi/repl.py
+	@poetry run python3 -m vadi.repl
 
 .PHONY: check
 check: ## Run code quality tools.
