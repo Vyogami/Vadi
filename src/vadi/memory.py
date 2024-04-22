@@ -1,6 +1,6 @@
 from typing import Dict
 
-from tokens import Token, Variable
+from .tokens import Token
 
 
 class Memory:
@@ -13,6 +13,6 @@ class Memory:
     def read_all(self) -> Dict[str, Token]:
         return self.variables
 
-    def write(self, variable: Variable, expression: Token) -> None:
+    def write(self, variable: Token, expression: Token) -> None:
         variable_name: str = variable.value
         self.variables[variable_name] = expression

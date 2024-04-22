@@ -1,12 +1,11 @@
-from typing import List
-
-from tokens import Token
+from .tokens import Token
+from .typedef import ParseTreeType, TokenListType, VariableType
 
 
 class Parser:
-    def __init__(self, tokens: List[Token]) -> None:
+    def __init__(self, tokens: TokenListType) -> None:
         # type: ignore # To disable pylance warnings
-        self.tokens: List[Token] = tokens
+        self.tokens: TokenListType = tokens
         self.idx: int = 0
 
         self.token: Token = self.tokens[self.idx]
@@ -16,16 +15,18 @@ class Parser:
         if self.idx < len(self.tokens):
             self.token = self.tokens[self.idx]
 
-    def variable(self) -> Token:
+    def variable(self) -> VariableType:
         if self.token.type.startswith("VAR"):
-            temp: Token = self.token
+            temp = self.token
             self.look_ahead()
             return temp
 
         if self.idx < len(self.tokens):
             self.token = self.tokens[self.idx]
 
-    def factor(self) -> Token | List[Token] | None:
+        return None
+
+    def factor(self) -> ParseTreeType:
         """A factor can be an int, float, expression inside parenthesis or a variable.
 
         Grammar:
@@ -42,7 +43,7 @@ class Parser:
             # To skip '('
             self.look_ahead()
             # To evaluate the expression in between parenthesis '(<expr>)'
-            expression: List[Token] = self.expression()
+            expression: ParseTreeType = self.expression()
 
             return expression
 
@@ -50,48 +51,48 @@ class Parser:
             return self.token
 
         elif self.token.value in ("+", "-"):
-            operator: Token = self.token
+            operator = self.token
             self.look_ahead()
-            operand: Token = self.factor()
+            operand = self.factor()
 
             return [operator, operand]
 
         return None
 
-    def term(self) -> List[Token]:
-        left_node: Token | List[Token] = self.factor()
+    def term(self) -> ParseTreeType:
+        left_node: ParseTreeType = self.factor()
         self.look_ahead()
 
         while self.token.value in ("*", "/"):
-            operator: Token = self.token
+            operator = self.token
             self.look_ahead()
 
-            right_node: Token = self.factor()
+            right_node: ParseTreeType = self.factor()
             left_node = [left_node, operator, right_node]
 
         return left_node
 
-    def expression(self) -> List[Token]:
-        left_node: Token | List[Token] = self.term()
+    def expression(self) -> ParseTreeType:
+        left_node: ParseTreeType = self.term()
 
         while self.token.value in ("+", "-"):
             operator: Token = self.token
             self.look_ahead()
 
-            right_node: Token = self.term()
+            right_node: ParseTreeType = self.term()
             left_node = [left_node, operator, right_node]
 
         return left_node
 
-    def statement(self) -> List[Token] | None:
+    def statement(self) -> ParseTreeType:
         # Variable assignment
         if self.token.type == "DECL":
             self.look_ahead()
-            left_node: Token = self.variable()
+            left_node: VariableType = self.variable()
             if self.token.value == "=":
                 operator: Token = self.token
                 self.look_ahead()
-                right_node: Token = self.expression()
+                right_node: ParseTreeType = self.expression()
 
                 return [left_node, operator, right_node]
 
@@ -101,5 +102,5 @@ class Parser:
 
         return None
 
-    def parse(self) -> Token | List[Token]:
+    def parse(self) -> ParseTreeType:
         return self.statement()

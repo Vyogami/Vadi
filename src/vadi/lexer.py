@@ -1,15 +1,15 @@
-from typing import List
-
-from tokens import Declaration, Float, Integer, Operator, Token, Variable
 from utils import constants
+
+from .tokens import Declaration, Float, Integer, Operator, Token, Variable
+from .typedef import NumberType, TokenListType, WordType
 
 
 class Lexer:
     def __init__(self, text: str) -> None:
         self.text: str = text
         self.idx: int = 0
-        self.tokens: List[Token] = []
-        self.token: Token | None = None
+        self.tokens: TokenListType = []
+        self.token: Token
         self.char: str = self.text[self.idx]
 
     def look_ahead(self) -> None:
@@ -18,9 +18,9 @@ class Lexer:
         if self.idx < len(self.text):
             self.char = self.text[self.idx]
 
-    def extract_number(self) -> Integer | Float:
+    def extract_number(self) -> NumberType:
         numbers: str = ""
-        isFloat = False
+        isFloat: bool = False
 
         while (self.char in constants.DIGITS or self.char == ".") and (self.idx < len(self.text)):
             # Check if the number is floating point by checking if it contains decimal point(.)
@@ -35,7 +35,7 @@ class Lexer:
         else:
             return Integer(numbers)
 
-    def extract_word(self) -> str:
+    def extract_word(self) -> WordType:
         word: str = ""
         while self.char.lower() in constants.ALPHABETS and self.idx < len(self.text):
             word += self.char
@@ -43,7 +43,7 @@ class Lexer:
 
         return word
 
-    def tokenize(self) -> List[Token]:
+    def tokenize(self) -> TokenListType:
         while self.idx < len(self.text):
             if self.char in constants.DIGITS:
                 self.token = self.extract_number()
