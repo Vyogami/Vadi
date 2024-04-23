@@ -5,11 +5,11 @@ Every little bit helps, and credit will always be given.
 
 You can contribute in many ways:
 
-# Types of Contributions
+## Types of Contributions
 
-## Report Bugs
+### Report Bugs
 
-Report bugs at https://github.com/vyogami/Vadi/issues
+Report bugs at <https://github.com/vyogami/Vadi/issues>
 
 If you are reporting a bug, please include:
 
@@ -17,23 +17,23 @@ If you are reporting a bug, please include:
 - Any details about your local setup that might be helpful in troubleshooting.
 - Detailed steps to reproduce the bug.
 
-## Fix Bugs
+### Fix Bugs
 
 Look through the GitHub issues for bugs.
 Anything tagged with "bug" and "help wanted" is open to whoever wants to implement a fix for it.
 
-## Implement Features
+### Implement Features
 
 Look through the GitHub issues for features.
 Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
 
-## Write Documentation
+### Write Documentation
 
 Cookiecutter PyPackage could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such.
 
-## Submit Feedback
+### Submit Feedback
 
-The best way to send feedback is to file an issue at https://github.com/vyogami/Vadi/issues.
+The best way to send feedback is to file an issue at <https://github.com/vyogami/Vadi/issues>.
 
 If you are proposing a new feature:
 
@@ -42,92 +42,73 @@ If you are proposing a new feature:
 - Remember that this is a volunteer-driven project, and that contributions
   are welcome :)
 
-# Get Started!
+## Get Started
 
 Ready to contribute? Here's how to set up `Vadi` for local development.
 Please note this documentation assumes you already have `poetry` and `Git` installed and ready to go.
 
 1. Fork the `Vadi` repo on GitHub.
 
-2. Clone your fork locally:
+1. Clone your fork locally:
 
-```bash
-cd <directory_in_which_repo_should_be_created>
-git clone git@github.com:YOUR_NAME/Vadi.git
-```
+   ```bash
+   git clone git@github.com:YOUR_NAME/Vadi.git
+   ```
 
-3. Now we need to install the environment. Navigate into the directory
+1. Create a branch for local development:
 
-```bash
-cd Vadi
-```
+   ```bash
+   git checkout -b name-of-your-bugfix-or-feature
+   ```
 
-If you are using `pyenv`, select a version to use locally. (See installed versions with `pyenv versions`)
+   Now you can make your changes locally.
 
-```bash
-pyenv local <x.y.z>
-```
+1. Setup virtual environment and instll dependecies
 
-Then, install and activate the environment with:
+   You need to have `poetry` installed on your machine. Check [python-poetry.org](https://python-poetry.org/docs/#installation) for installation instructions.
 
-```bash
-poetry install
-poetry shell
-```
+   ```bash
+   make install
+   ```
 
-4. Install pre-commit to run linters/formatters at commit time:
+1. Don't forget to add test cases with relevant documentation for your added functionality to the `tests` directory.
 
-```bash
-poetry run pre-commit install
-```
+1. When you're done making changes, check that your changes pass the formatting tests.
 
-5. Create a branch for local development:
+   ```bash
+   make check
+   ```
 
-```bash
-git checkout -b name-of-your-bugfix-or-feature
-```
+1. Now, validate that all unit tests are passing:
 
-Now you can make your changes locally.
+   ```bash
+   make test
+   ```
 
-6. Don't forget to add test cases for your added functionality to the `tests` directory.
-
-7. When you're done making changes, check that your changes pass the formatting tests.
-
-```bash
-make check
-```
-
-Now, validate that all unit tests are passing:
-
-```bash
-make test
-```
-
-9. Before raising a pull request you should also run tox.
+1. Before raising a pull request you should also run tox.
    This will run the tests across different versions of Python:
 
-```bash
-tox
-```
+   ```bash
+   tox
+   ```
 
-This requires you to have multiple versions of python installed.
-This step is also triggered in the CI/CD pipeline, so you could also choose to skip this step locally.
+   This requires you to have multiple versions of python installed.
+   This step is also triggered in the CI/CD pipeline, so you could also choose to skip this step locally.
 
-10. Commit your changes and push your branch to GitHub:
+1. Commit your changes and push your branch to GitHub:
 
-```bash
-git add .
-git commit -m "Your detailed description of your changes."
-git push origin name-of-your-bugfix-or-feature
-```
+   ```bash
+   git add .
+   git commit -m "Your detailed description of your changes."
+   git push origin name-of-your-bugfix-or-feature
+   ```
 
-11. Submit a pull request through the GitHub website.
+1. Submit a pull request through the GitHub website.
 
-# Pull Request Guidelines
+## Pull Request Guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
 
-2. If the pull request adds functionality, the docs should be updated.
-   Put your new functionality into a function with a docstring, and add the feature to the list in `README.md`.
+1. If the pull request adds functionality, the docs should be updated.Put your new functionality into a function with a docstring, and add the feature to the list in `README.md`.
