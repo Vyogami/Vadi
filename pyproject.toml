@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "vadi"
 version = "0.0.1"
-description = "A simple, interpreted, statically-typed programming language."
+description = "REPL of a simple, interpreted and statically-typed programming language."
 authors = ["Shivam Shandilya <fvyogami@gmail.com>"]
 repository = "https://github.com/vyogami/Vadi"
-documentation = "https://vyogami.github.io/Vadi/"
+documentation = "https://github.com/vyogami/Vadi/blob/main/CONTRIBUTING.md"
 readme = "README.md"
 packages = [
   { include = "vadi", from = "src" },
