@@ -10,6 +10,9 @@ The interpreter which is the part of Vadi that runs your code, uses a technique 
 
 Use [pip](https://pip.pypa.io/en/stable/) or [pipx](https://github.com/pypa/pipx) to install vadi's REPL.
 
+> [!WARNING]
+> Use Python versions `>=3.10` for installing Vadi.
+
 > [!TIP]
 > The [pipx](https://github.com/pypa/pipx) package installer is strongly recommend for installing vadi on a global level to avoid conflicts.
 
