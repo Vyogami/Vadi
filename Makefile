@@ -39,7 +39,11 @@ publish: ## publish a release to pypi.
 	@echo "🚀 Publishing."
 	@poetry publish
 
-build-and-publish: build publish ## Build and publish.
+set-pypi-token: ## setup pypi token env_var for release
+	@echo "🚀 Setting: PYPI_TOKEN environment variable."
+	@poetry config pypi-token.pypi $(PYPI_TOKEN)
+
+build-and-publish: build set-pypi-token publish ## Build and publish.
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
