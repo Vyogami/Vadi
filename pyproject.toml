@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vadi"
-version = "0.0.5"
+version = "0.0.6"
 description = "REPL of a simple, interpreted and statically-typed programming language."
 authors = ["Shivam Shandilya <fvyogami@gmail.com>"]
 repository = "https://github.com/vyogami/Vadi"
