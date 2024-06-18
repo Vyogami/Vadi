@@ -3,9 +3,17 @@ name = "vadi"
 version = "0.0.7"
 description = "REPL of a simple, interpreted and statically-typed programming language."
 authors = ["Shivam Shandilya <fvyogami@gmail.com>"]
+maintainers = ["Shivam Shandilya <fvyogami@gmail.com>"]
 repository = "https://github.com/vyogami/Vadi"
 documentation = "https://github.com/vyogami/Vadi/blob/main/CONTRIBUTING.md"
+keywords = ["interpreter", "language", "REPL", "compiler", "Vadi"]
 readme = "README.md"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Software Development :: Compilers",
+  "Topic :: Software Development :: Interpreters",
+]
 packages = [
   { include = "vadi", from = "src" },
   { include = "vadi/py.typed", from = "src" },
@@ -96,7 +104,7 @@ ignore = [
   # builtinArgumentShadowing
   "A002",
   # blanketTypeIgnore
-  "PGH003"
+  "PGH003",
 ]
 
 [tool.ruff.format]
